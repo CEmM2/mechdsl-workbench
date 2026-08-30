@@ -1,0 +1,17 @@
+% MechDSL canonical first-run example -- elastic cantilever (SVK Hex8).
+% mechanics dim 3
+% mechanics cell hex8
+% mechanics formulation total_lagrangian
+% mechanics material svk --E 200e3 --nu 0.3
+% mechanics boundary fix --type dirichlet --value 0 --components 0 1 2
+% mechanics boundary load --type neumann --traction "0 0 -1000"
+
+\section{Elastic cantilever}
+
+This source describes a three-dimensional Hex8 problem with a Saint
+Venant--Kirchhoff material. Press \emph{Compile} to emit Taichi source.
+
+The deformation map is
+\[
+  \boldsymbol{x} = \boldsymbol{X} + \boldsymbol{u}.
+\]

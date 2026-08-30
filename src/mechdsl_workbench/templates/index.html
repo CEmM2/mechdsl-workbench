@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Standalone MechDSL mechanics and algo2code LaTeX-to-Taichi workbench">
+  <title>MechDSL Workbench</title>
+  <link rel="stylesheet" href="{{ request.url_for('static', path='app.css') }}">
+  <script src="{{ request.url_for('static', path='mathjax-config.js') }}" defer></script>
+  {% if mathjax_url %}
+  <script id="MathJax-script" src="{{ mathjax_url }}" defer></script>
+  {% endif %}
+  <script src="{{ request.url_for('static', path='app.js') }}" defer></script>
+</head>
+<body data-max-source-bytes="{{ max_source_bytes }}"
+      data-initial-mode="{{ default_example.mode }}"
+      data-mechanics-ready="{{ 'true' if compiler_probe.mechanics_ready else 'false' }}"
+      data-algorithm-ready="{{ 'true' if compiler_probe.algorithm_ready else 'false' }}">
+  <header class="app-header">
+    <div class="brand-block">
+      <div class="brand-mark" aria-hidden="true">M</div>
+      <div>
+        <h1>MechDSL Workbench</h1>
+        <p>Mechanics or algorithms in LaTeX, generated Taichi out.</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="mode-control" role="group" aria-label="Workbench mode">
+        <button id="mode-mechanics" class="mode-button active" type="button" data-mode="mechanics" aria-pressed="true">Mechanics</button>
+        <button id="mode-algorithm" class="mode-button" type="button" data-mode="algorithm" aria-pressed="false">Algorithm</button>
+      </div>
+      <label class="example-control" for="example-select">
+        <span>Example</span>
+        <select id="example-select">
+          {% for example in examples %}
+          <option value="{{ example.id }}"
+                  data-mode="{{ example.mode }}"
+                  {% if example.id == default_example.id %}selected{% endif %}>
+            {{ example.title }}
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+      <button id="run-button" class="primary-button" type="button">
+        <span class="button-label">Compile</span>
+        <span class="shortcut">Ctrl/⌘ Enter</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="compiler-banner {% if compiler_probe.compatible %}ready{% else %}warning{% endif %}"
+       id="compiler-banner"
+       role="status">
+    <span class="status-dot" aria-hidden="true"></span>
+    <span id="compiler-banner-text">{{ compiler_probe.message }}</span>
+    <button id="refresh-capabilities" class="text-button" type="button">Check again</button>
+  </div>
+
+  <main class="workbench">
+    <section class="source-panel" aria-labelledby="source-heading">
+      <div class="panel-heading">
+        <div>
+          <h2 id="source-heading">Mechanics LaTeX source</h2>
+          <p id="example-description">{{ default_example.description }}</p>
+        </div>
+        <div class="source-actions">
+          <button id="toggle-energy" class="secondary-button" type="button" aria-expanded="false">
+            Add energy source
+          </button>
+          <button id="download-source" class="secondary-button" type="button">Download .tex</button>
+        </div>
+      </div>
+
+      <div class="editor-stack">
+        <div class="editor-label-row">
+          <label id="source-label" for="source-input">Problem source</label>
+          <span id="source-size" class="byte-count"></span>
+        </div>
+        <div class="editor-shell">
+          <pre id="source-lines" class="line-gutter" aria-hidden="true">1</pre>
+          <textarea id="source-input"
+                    spellcheck="false"
+                    autocapitalize="off"
+                    autocomplete="off"
+                    aria-describedby="source-help">{{ default_example.source }}</textarea>
+        </div>
+        <p id="source-help" class="visually-hidden">Enter LaTeX containing MechDSL mechanics directives.</p>
+
+        <div id="energy-section" class="energy-section" hidden>
+          <div class="editor-label-row">
+            <label for="energy-source">Optional constitutive energy source</label>
+            <span id="energy-size" class="byte-count"></span>
+          </div>
+          <div class="editor-shell compact">
+            <pre id="energy-lines" class="line-gutter" aria-hidden="true">1</pre>
+            <textarea id="energy-source"
+                      spellcheck="false"
+                      autocapitalize="off"
+                      autocomplete="off"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="output-panel" aria-labelledby="output-heading">
+      <div class="tab-bar" role="tablist" aria-label="Translation output">
+        <h2 id="output-heading" class="visually-hidden">Translation output</h2>
+        <button class="tab active" type="button" role="tab" aria-selected="true" data-tab="preview">Preview</button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="generated">
+          <span id="generated-tab-label">Generated Taichi</span>
+        </button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="translation">
+          <span id="translation-tab-label">Compiler View</span>
+        </button>
+        <button class="tab" type="button" role="tab" aria-selected="false" data-tab="diagnostics">
+          Diagnostics <span id="diagnostic-count" class="badge" hidden>1</span>
+        </button>
+      </div>
+
+      <div class="tab-content">
+        <section id="panel-preview" class="tab-panel active" role="tabpanel">
+          <div class="preview-layout">
+            <aside class="directive-column">
+              <h3 id="directive-heading">Mechanics directives</h3>
+              <div id="directive-cards" class="directive-cards"></div>
+              <div id="preview-warnings" class="preview-warnings" hidden></div>
+            </aside>
+            <article class="document-preview">
+              <div class="preview-note" id="preview-note"></div>
+              <div id="preview-body" class="preview-body"></div>
+            </article>
+          </div>
+        </section>
+
+        <section id="panel-generated" class="tab-panel" role="tabpanel" hidden>
+          <div class="code-toolbar">
+            <span id="generated-meta">Run the source to generate Taichi.</span>
+            <div>
+              <button id="copy-generated" class="secondary-button" type="button" disabled>Copy</button>
+              <button id="download-generated" class="secondary-button" type="button" disabled>Download .py</button>
+            </div>
+          </div>
+          <pre class="code-view"><code id="generated-output"># Generated source will appear here.</code></pre>
+        </section>
+
+        <section id="panel-translation" class="tab-panel" role="tabpanel" hidden>
+          <div id="translation-empty" class="empty-state">
+            Run once to inspect the public MechDSL integration result.
+          </div>
+          <div id="translation-result" hidden>
+            <dl id="translation-summary" class="summary-grid"></dl>
+            <details class="raw-details">
+              <summary>Raw public integration result</summary>
+              <pre><code id="translation-raw"></code></pre>
+            </details>
+          </div>
+        </section>
+
+        <section id="panel-diagnostics" class="tab-panel" role="tabpanel" hidden>
+          <div class="diagnostic-toolbar">
+            <span>Compiler, transpiler, and worker diagnostics</span>
+            <button id="copy-diagnostic" class="secondary-button" type="button" disabled>Copy diagnostic</button>
+          </div>
+          <div id="diagnostic-empty" class="empty-state">No diagnostics.</div>
+          <article id="diagnostic-result" class="diagnostic-card" hidden>
+            <div class="diagnostic-title-row">
+              <span id="diagnostic-stage" class="stage-pill"></span>
+              <strong id="diagnostic-category"></strong>
+              <code id="diagnostic-code"></code>
+            </div>
+            <p id="diagnostic-message"></p>
+            <div id="diagnostic-location" class="diagnostic-location" hidden></div>
+            <pre id="diagnostic-excerpt" class="diagnostic-excerpt" hidden></pre>
+            <details id="diagnostic-details-wrap" hidden>
+              <summary>Technical details</summary>
+              <pre id="diagnostic-details"></pre>
+            </details>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="status-bar">
+    <span id="activity-status">Ready.</span>
+    <span class="status-separator" aria-hidden="true">•</span>
+    <span id="run-summary">No translation yet</span>
+    <span class="status-spacer"></span>
+    <span>Workbench {{ app_version }}</span>
+  </footer>
+</body>
+</html>

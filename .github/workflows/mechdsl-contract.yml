@@ -1,0 +1,17 @@
+name: MechDSL contract
+
+on:
+  workflow_dispatch:
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - run: uv sync --group dev
+      - run: uv run --no-sync python scripts/install_pinned_mechdsl.py
+      - run: MECHDSL_CONTRACT_TEST=1 uv run --no-sync pytest -m contract

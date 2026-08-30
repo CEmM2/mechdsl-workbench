@@ -1,0 +1,22 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.env
+.DS_Store
+workbench.log
+
+# Session tooling state
+.orchestra/
+# comment-sweep artifacts
+.comment-review/
+comment-cleanup.patch
+*.comment-sweep.bak
+CLAUDE.md
+TEST_REPORT.md

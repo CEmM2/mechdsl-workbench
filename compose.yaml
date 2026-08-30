@@ -1,0 +1,11 @@
+services:
+  workbench:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    environment:
+      MECHDSL_WORKBENCH_HOST: 0.0.0.0
+      MECHDSL_WORKBENCH_PORT: 8000
+      MECHDSL_WORKBENCH_COMPILE_TIMEOUT: 30
+    restart: unless-stopped
