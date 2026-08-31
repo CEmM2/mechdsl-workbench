@@ -8,8 +8,9 @@ import os
 import signal
 import subprocess
 import sys
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Any, Protocol, Sequence
+from typing import Any, Protocol
 
 from ..config import Settings
 from .diagnostics import normalize_exception, worker_diagnostic

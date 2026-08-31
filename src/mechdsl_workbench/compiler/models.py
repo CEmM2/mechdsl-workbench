@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Literal, Mapping
+from typing import Any, Literal
 
 Severity = Literal["error", "warning", "info"]
 WorkbenchMode = Literal["mechanics", "algorithm"]

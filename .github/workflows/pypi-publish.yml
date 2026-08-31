@@ -1,0 +1,26 @@
+name: PyPI publish
+
+# Fires on version tags; guarded to the public CEmM2 mirror (the only repo
+# registered as a PyPI trusted publisher).
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  id-token: write   # OIDC token for PyPI trusted publishing — no API keys
+  contents: read
+
+jobs:
+  build-and-publish:
+    if: github.repository_owner == 'CEmM2'
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Build
+        run: uv build --out-dir dist && ls -la dist
+      - name: Publish to PyPI (trusted publishing)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist
