@@ -20,3 +20,6 @@ comment-cleanup.patch
 *.comment-sweep.bak
 CLAUDE.md
 TEST_REPORT.md
+.claude/
+.claude/
+mechdsl_workbench-*/
