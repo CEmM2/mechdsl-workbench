@@ -1,0 +1,17 @@
+% MechDSL equation-bearing SVK Hex8 example.
+% mechanics dim 3
+% mechanics cell hex8
+% mechanics formulation total_lagrangian
+% mechanics material svk --E 200e3 --nu 0.3
+% mechanics field u --type vector --space H1 --order 1
+% mechanics constitutive Psi --strain_energy
+% mechanics constitutive S --pk2
+% mechanics weak_form internal_residual --residual
+% mechanics boundary fix --type dirichlet --value 0 --components 0 1 2
+% mechanics boundary load --type neumann --traction "1 0 0" --surface x1
+
+\section{Equation-bearing source}
+
+The directives declare the displacement field, strain-energy role, PK2 stress
+role, and weak-form residual. They remain ordinary LaTeX comments to a TeX
+compiler while carrying semantics for MechDSL.

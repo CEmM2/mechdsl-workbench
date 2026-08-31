@@ -43,8 +43,8 @@ dependencies = [
 mechdsl-workbench = "mechdsl_workbench.cli:main"
 
 [project.urls]
-Repository = "https://github.com/CEmM2/mechdsl-workbench"
-MechDSL = "https://github.com/CEmM2/MechDSL"
+Repository = "https://github.com/SOSOVSKI/mechdsl-workbench"
+MechDSL = "https://github.com/SOSOVSKI/MechDSL"
 
 [dependency-groups]
 dev = [

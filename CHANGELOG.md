@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1] - 2026-08-31
+
+### Changed
+
+- Version bump in lock-step with the MechDSL workspace packages (first PyPI-era release).
+- Prepared (commented, activation-gated) `[mechdsl]` extra: once `mechdsl-core`/`algo2code` 0.2.1 are on PyPI, `pip install "mechdsl-workbench[mechdsl]"` installs the workbench together with the engine.
+
+
 ## 0.2.0 - 2026-08-18
 
 - Added a top-level Mechanics/Algorithm mode selector.
