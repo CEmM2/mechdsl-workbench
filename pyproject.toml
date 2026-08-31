@@ -27,17 +27,15 @@ dependencies = [
     "uvicorn>=0.35,<1",
 ]
 
-# One-command full stack: workbench + the engine it drives.
-# ACTIVATION GATE: uncomment this block only AFTER mechdsl-core 0.2.1 and
-# algo2code 0.2.1 are live on PyPI — until then `uv lock` cannot resolve it.
+# One-command full stack: workbench + the engine it drives (from PyPI).
 # Keep the bounds in lock-step with MECHDSL_WORKBENCH_SUPPORTED_MECHDSL in
 # src/mechdsl_workbench/config.py (currently >=0.2.0,<0.3.0) — same contract,
 # two spellings.
-# [project.optional-dependencies]
-# mechdsl = [
-#     "mechdsl-core[verify]>=0.2.1,<0.3",
-#     "algo2code>=0.2.1,<0.3",
-# ]
+[project.optional-dependencies]
+mechdsl = [
+    "mechdsl-core[verify]>=0.2.1,<0.3",
+    "algo2code>=0.2.1,<0.3",
+]
 
 [project.scripts]
 mechdsl-workbench = "mechdsl_workbench.cli:main"

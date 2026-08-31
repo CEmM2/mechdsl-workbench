@@ -82,6 +82,16 @@ The installer pins both packages to MechDSL `v0.2.0`:
 f173fd43d56aa13f947f1071d90468a87961c120
 ```
 
+## Install from PyPI
+
+```bash
+pip install "mechdsl-workbench[mechdsl]"   # workbench + the MechDSL engine, one command
+pip install mechdsl-workbench              # workbench alone (bring your own mechdsl-core)
+```
+
+The `[mechdsl]` extra pulls `mechdsl-core[verify]` and `algo2code` from PyPI —
+the full engine, including Taichi (expect a large download).
+
 ## Install with the pinned Git dependencies
 
 ```bash
