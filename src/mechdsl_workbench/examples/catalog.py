@@ -48,15 +48,6 @@ _EXAMPLES: tuple[Example, ...] = (
         source_file="equation_svk_hex8.tex",
     ),
     Example(
-        id="svk-tet4",
-        mode="mechanics",
-        title="SVK Tet4",
-        description="A compact element-type comparison source.",
-        difficulty="first steps",
-        tags=("SVK", "Tet4", "elasticity"),
-        source_file="svk_tet4.tex",
-    ),
-    Example(
         id="algo-radial-return-j2",
         mode="algorithm",
         title="J2 radial return",

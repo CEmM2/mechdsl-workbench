@@ -6,6 +6,12 @@
 
 - `scripts/install_pinned_mechdsl.py` and the README pin MechDSL `v0.2.2` (was `v0.2.0`).
 
+### Removed
+
+- The SVK Tet4 example. MechDSL's `mvp` profile, the only one its integration API
+  accepts, compiles Hex8 elements only, so the example always returned a
+  compile error.
+
 ## [0.2.1] - 2026-08-31
 
 ### Changed

@@ -41,7 +41,7 @@ public integration boundary is checked in CI.
 - safe MathJax-oriented preview and `% mechanics` directive cards;
 - generated Taichi source;
 - public ElementIR summary, semantic hash, and derived-energy status;
-- SVK Hex8, equation-bearing Hex8, and Tet4 examples.
+- SVK Hex8 and equation-bearing Hex8 examples.
 
 ### Algorithm mode
 
