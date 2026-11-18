@@ -76,10 +76,10 @@ or transpiler returned.
   - `packages/mechdsl-core`;
   - `packages/algo2code`.
 
-The installer pins both packages to MechDSL `v0.2.0`:
+The installer pins both packages to MechDSL `v0.2.2`:
 
 ```text
-f173fd43d56aa13f947f1071d90468a87961c120
+9ab4d90b506cda97ae6c66f786ec2639d1030c48
 ```
 
 ## Install from PyPI

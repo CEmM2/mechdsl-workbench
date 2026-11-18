@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-MECHDSL_REV = "f173fd43d56aa13f947f1071d90468a87961c120"  # CEmM2/MechDSL tag v0.2.0
+MECHDSL_REV = "9ab4d90b506cda97ae6c66f786ec2639d1030c48"  # CEmM2/MechDSL tag v0.2.2
 MECHDSL_GIT = "https://github.com/CEmM2/MechDSL.git"
 PACKAGES = ("mechdsl-core", "algo2code")
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- `scripts/install_pinned_mechdsl.py` and the README pin MechDSL `v0.2.2` (was `v0.2.0`).
+
 ## [0.2.1] - 2026-08-31
 
 ### Changed
